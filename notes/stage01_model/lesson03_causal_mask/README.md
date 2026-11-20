@@ -62,6 +62,54 @@ If you set future weights to 0 **after** softmax, the remaining weights no longe
 - **Line 126 (fast path):** `F.scaled_dot_product_attention(..., is_causal=True)` is PyTorch's optimized built-in that does the same thing in one call.
 - **Lines 128–131 (manual path):** exactly our steps: scores → `+ mask` → softmax → `@ V`. (The `/ math.sqrt(self.head_dim)` comes in Lesson 1.6.)
 
+## Shapes, step by step (`lesson03b_shapes.py`)
+
+```bash
+.venv/bin/python notes/stage01_model/lesson03_causal_mask/lesson03b_shapes.py
+```
+
+**Matrix multiplication rule:** `(a × b) @ (b × c) = (a × c)`. The inner sizes must match and they disappear. Each output cell = (a row of the left) · (a column of the right).
+
+With 3 words (seq) and 2 numbers per word (dim):
+
+| Step | Calculation | Shape | Meaning |
+|---|---|---|---|
+| input | `x` | 3 × 2 | one vector per word |
+| learned knobs | `Wq, Wk, Wv` | 2 × 2 | dim × dim; same for every sentence |
+| Q, K, V | `x @ W` = (3×2)@(2×2) | 3 × 2 | one query / key / value per word |
+| flip K | `K.T` | 2 × 3 | words become columns |
+| scores | `Q @ K.T` = (3×2)@(2×3) | **3 × 3** | cell [i][j] = Q[word i] · K[word j] |
+| weights | `softmax(scores + mask)` | **3 × 3** | each row adds up to 100% |
+| output | `weights @ V` = (3×3)@(3×2) | 3 × 2 | each word = weighted mix of the visible words' values |
+
+**Only scores/weights are seq × seq.** The output has the **same shape as the input**, so the residual (`x + out`) works and blocks can be stacked.
+
+In MiniMind: `x (340, 768)` → `Q, K, V (340, 768)` → `weights (340, 340)` → `out (340, 768)`.
+
+## Shape quiz
+
+**Round 1:** 5 words, 4 numbers per word.
+<details><summary>Answers</summary>
+
+`x` (5×4) · `Wq` (4×4) · `Q` (5×4) · `K.T` (4×5) · `scores` (5×5) · mask (5×5), −inf above the diagonal · `out` (5×4)
+
+Weight matrices only contain **dim** sizes, never seq: they must work for any sentence length.
+</details>
+
+**Round 2:** same 5 words, 10 numbers per word. What changes?
+<details><summary>Answers</summary>
+
+`x` (5×10) · `Wq` (10×10) · `Q` (5×10) · `K.T` (10×5) · `out` (5×10) change. **`scores` and the mask stay (5×5)**: `(5×10)@(10×5)`, and the 10s cancel. Every word vs every word is still 5 × 5.
+
+**dim** sets `x, W, Q, K, V, out`. **seq** alone sets `scores, weights, mask`. That's why long texts are expensive (seq × seq).
+</details>
+
+**Round 3:** MiniMind, 100 tokens, 768 dims.
+<details><summary>Answers</summary>
+
+`x` (100×768) · `scores` (100×100) · `out` (100×768) · `lm_head` output (100×6400): next-token scores at every position.
+</details>
+
 ## Check yourself
 
 <details><summary>What would go wrong during training without the mask?</summary>
