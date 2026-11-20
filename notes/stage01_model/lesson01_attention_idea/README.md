@@ -61,6 +61,27 @@ new bank = 4% × the + 71% × river + 26% × bank
 - In a real model, **every** token does this at the same time, not just "bank".
 - No new knobs were used here. Lesson 1.2 adds the learned part: **Query, Key, Value**, which let the model *learn* what counts as "related" instead of relying on raw dot products of the word vectors.
 
+## Why softmax and not the raw scores?
+
+It's a **relative** measure: what matters is how a word scores compared to the others.
+- Raw `[0, 3, 2]` adds up to 5, so the "average" grows: `3×[3,0] + 2×[1,1] = [11, 2]`, bigger than any input, and it would explode over 8 blocks and longer sentences.
+- Dot products can be negative, and a negative weight would flip a vector.
+- Softmax weights are always **positive and add up to 100%**, so the result is a true average.
+
+## Experiment: the weakness of this version
+
+Change `bank` to `[2.0, 1.0]` (it now starts water-leaning) and look at "the money bank":
+
+```
+money  similarity 3  → 12%
+bank   similarity 5  → 88%     ← mostly listens to itself
+bank after: [1.75, 1.23]  → still WATER
+```
+
+The raw dot product rewards similarity to **what the word already is**, so a word can only find words like itself. But to work out its meaning, "bank" should look for a *different kind* of word (context about water or money). Likewise, "**it** was delicious": "it" needs to find "pizza", which looks nothing like "it".
+
+Fix (Lesson 1.2): separate **what I'm looking for** (Query) from **what I am** (Key), using learned Linear layers.
+
 ## Check yourself
 
 <details><summary>What does a big dot product between two vectors mean?</summary>

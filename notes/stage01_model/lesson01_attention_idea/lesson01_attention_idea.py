@@ -33,7 +33,7 @@ def attend(sentence, focus_word="bank"):
     weights = F.softmax(sims, dim=0)
 
     # STEP 3. New vector = weighted mix of the earlier words' vectors
-    new_me = sum(wt * vectors[w] for wt, w in zip(weights, earlier))
+    new_me = sum(wt * vectors[word] for wt, word in zip(weights, earlier))
 
     print(f'sentence: "{sentence}"   focus: "{focus_word}"')
     print(f"  {'word':7s} {'vector':12s} {'similarity':>10s} {'weight':>7s}")
