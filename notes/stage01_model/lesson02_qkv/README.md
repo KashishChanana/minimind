@@ -54,6 +54,12 @@ In "the river bank" it becomes `[3, 0, 0]` → WATER. Even though "bank" started
 - In MiniMind they're `q_proj`, `k_proj`, `v_proj` in `model/model_minimind.py` (lines 101–103), and Q and K are 96 numbers per head, not 1.
 - **Where did bank's own meaning go?** Here, `bank after = [0, 3, 0]` lost its original vector. The real model **adds the original back** after attention (the residual connection, in a later lesson), so a token keeps its own meaning and gains context.
 
+## My summary
+
+> Q tells me what I need (the query). K tells me what the other tokens advertise themselves as. V is what a token passes on if it gets chosen.
+
+**Refined:** **Why three instead of one:** with a single vector, a word can only find words that look like itself (the `[2, 1]` experiment: "bank" gave 88% to itself and ignored "money"). Separating what I'm looking for (Q) from how others find me (K) lets a word find a *different kind* of word ("it" → "pizza").
+
 ## Check yourself
 
 <details><summary>Why can't attention just use my vector · their vector?</summary>

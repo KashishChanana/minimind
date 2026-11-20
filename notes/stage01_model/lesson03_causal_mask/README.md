@@ -110,6 +110,12 @@ Weight matrices only contain **dim** sizes, never seq: they must work for any se
 `x` (100×768) · `scores` (100×100) · `out` (100×768) · `lm_head` output (100×6400): next-token scores at every position.
 </details>
 
+## My summary
+
+> The causal mask prevents label leakage. It sets everything in the future to minus infinity, so a token can't see what comes next.
+
+**Refined:** Precisely: it sets future **scores** (cells above the diagonal of the scores table) to −inf **before softmax**, so they get exactly 0% weight.
+
 ## Check yourself
 
 <details><summary>What would go wrong during training without the mask?</summary>

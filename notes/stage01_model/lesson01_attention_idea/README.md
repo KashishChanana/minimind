@@ -82,6 +82,12 @@ The raw dot product rewards similarity to **what the word already is**, so a wor
 
 Fix (Lesson 1.2): separate **what I'm looking for** (Query) from **what I am** (Key), using learned Linear layers.
 
+## My summary
+
+> Attention figures out which of the input tokens matter for the current token. It's a smart way of giving importance to each of the inputs.
+
+**Refined:** Each token's new vector is a **weighted average of the earlier tokens' vectors**, so the same word ("bank") gets a different vector depending on context. Attention *refines each token's vector*; the next-word prediction happens only at the end (`lm_head`).
+
 ## Check yourself
 
 <details><summary>What does a big dot product between two vectors mean?</summary>
