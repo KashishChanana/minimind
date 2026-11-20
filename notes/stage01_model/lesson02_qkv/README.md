@@ -54,6 +54,13 @@ In "the river bank" it becomes `[3, 0, 0]` → WATER. Even though "bank" started
 - In MiniMind they're `q_proj`, `k_proj`, `v_proj` in `model/model_minimind.py` (lines 101–103), and Q and K are 96 numbers per head, not 1.
 - **Where did bank's own meaning go?** Here, `bank after = [0, 3, 0]` lost its original vector. The real model **adds the original back** after attention (the residual connection, in a later lesson), so a token keeps its own meaning and gains context.
 
+## Why do we need V? How is it different from K?
+
+- **Q · K only gives percentages** (`seq × seq`): "listen 70% to money". 70% *of what*? That's V. `weights @ V` turns "who to listen to" into an actual vector per word.
+- **K and V are built the same way** (both a Linear applied to `x`) but have **different jobs**. K is only ever *compared* with queries, to decide the weights, and never reaches the output. V is only ever *passed on*. K = the advertisement, V = the product delivered. Different jobs → different nudges during training → different learned numbers.
+- **Couldn't we just mix the raw `x`** (`out = weights @ x`)? Yes, it works. But then a word can only send **a copy of itself**: `new bank = bank + 0.7 × money` makes "bank" partly turn into "money". With V, "money" can send a **message written for others** ("the context is finance"). V is an upgrade, not a necessity.
+- `lesson02b_do_we_need_v.py` trains both versions on the README. With V fits the training text better (1.88 vs 2.44), but the README is too small for either to generalise (test loss about 7 for both), so the tiny experiment can't show V's benefit. That needs real amounts of data.
+
 ## My summary
 
 > Q tells me what I need (the query). K tells me what the other tokens advertise themselves as. V is what a token passes on if it gets chosen.
