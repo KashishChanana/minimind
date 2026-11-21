@@ -51,7 +51,7 @@ In "the river bank" it becomes `[3, 0, 0]` → WATER. Even though "bank" started
 
 - Q, K, V are just three **Linear layers** applied to every token's vector (Lesson 0.3).
 - Their weights are **knobs**. Here they're hand-picked; in MiniMind they're **learned** by the training loop (Lesson 0.2). Training discovers useful things to look for: "find my noun", "find the previous verb"...
-- In MiniMind they're `q_proj`, `k_proj`, `v_proj` in `model/model_minimind.py` (lines 101–103), and Q and K are 96 numbers per head, not 1.
+- In MiniMind they're `q_proj`, `k_proj`, `v_proj` in `model/model_minimind.py` (lines 100–102), and Q and K are 96 numbers per head, not 1.
 - **Where did bank's own meaning go?** Here, `bank after = [0, 3, 0]` lost its original vector. The real model **adds the original back** after attention (the residual connection, in a later lesson), so a token keeps its own meaning and gains context.
 
 ## Why do we need V? How is it different from K?

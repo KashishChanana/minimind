@@ -53,7 +53,7 @@ The copy happens **after** the cache, so only 4 heads are ever stored. After `re
 | Line | Code | Shape |
 |---|---|---|
 | 23 | `num_key_value_heads = 4` (config) | |
-| 102–103 | `k_proj`, `v_proj` = `Linear(768, 4 × 96)` | 768 → 384 |
+| 101–102 | `k_proj`, `v_proj` = `Linear(768, 4 × 96)` | 768 → 384 |
 | 115–116 | `xk.view(bsz, seq_len, 4, 96)` | (batch, seq, 4, 96) |
 | 121–123 | `past_key_value` concat, `past_kv = (xk, xv)` | the KV cache (4 heads) |
 | 124 | `repeat_kv(xk, self.n_rep)` with `n_rep = 8 // 4 = 2` | (batch, seq, 8, 96) |
