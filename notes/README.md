@@ -6,7 +6,7 @@ Run scripts from the `minimind/` folder: `.venv/bin/python notes/<stage>/<lesson
 ✅ done · 👉 next · 🟡 half done · ⬜ to do · 🖥️ needs a rented GPU
 
 ```
-Progress  ██████░░░░░░░░░░░░░░  10 / 31 lessons   (attention: done ✅)
+Progress  ███████░░░░░░░░░░░░░  11 / 32 lessons   (attention: done ✅)
 ```
 
 ## Stage 0: Foundations ✅ — [stage00_foundations/](stage00_foundations/)
@@ -36,8 +36,9 @@ Progress  ██████░░░░░░░░░░░░░░  10 / 31 
 - ⬜ 1.12 (optional) Mixture of Experts
 - ⬜ ★ Checkpoint: build a tiny MiniMind from scratch
 
-## Stage 2: Tokenizer (short; mostly covered in 0.1)
-- ⬜ `trainer/train_tokenizer.py` read-through, compression ratio, chat template
+## Stage 2: Tokenizer (short) — [stage02_tokenizer/](stage02_tokenizer/)
+- ✅ 2.1 Inside the tokenizer: bytes, `Ġ`/`Ċ`, reserved slots, compression, why 6,400 tokens
+- 👉 2.2 The chat template: what a conversation looks like to the model
 
 ## Stage 3: Data pipeline (`dataset/lm_dataset.py`)
 - ⬜ Download datasets · pretraining samples · loss masks · chat template for SFT data
