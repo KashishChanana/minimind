@@ -17,8 +17,8 @@ Run scripts from the `minimind/` folder: `.venv/bin/python notes/<stage>/<lesson
 - ✅ 1.2 Query, Key, Value
 - ✅ 1.3 Causal mask + attention shapes (+ shape quiz)
 - ✅ 1.4 Multiple heads: 768 numbers split into 8 heads × 96
-- 👉 1.5 GQA: heads sharing keys/values to save memory
-- ⬜ 1.6 MiniMind's real `Attention` class, line by line (+ why ÷√96, real trained attention weights)
+- ✅ 1.5 GQA: heads sharing keys/values to save memory
+- 👉 1.6 MiniMind's real `Attention` class, line by line (+ why ÷√96, real trained attention weights)
 - ⬜ ★ Checkpoint: write attention from a blank file, compare with MiniMind
 
 **The rest of a block**
