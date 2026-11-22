@@ -6,7 +6,7 @@ Run scripts from the `minimind/` folder: `.venv/bin/python notes/<stage>/<lesson
 ✅ done · 👉 next · 🟡 half done · ⬜ to do · 🖥️ needs a rented GPU
 
 ```
-Progress  ███████░░░░░░░░░░░░░  11 / 32 lessons   (attention: done ✅)
+Progress  ████████░░░░░░░░░░░░  12 / 32 lessons   (attention: done ✅)
 ```
 
 ## Stage 0: Foundations ✅ — [stage00_foundations/](stage00_foundations/)
@@ -36,9 +36,9 @@ Progress  ███████░░░░░░░░░░░░░  11 / 32 
 - ⬜ 1.12 (optional) Mixture of Experts
 - ⬜ ★ Checkpoint: build a tiny MiniMind from scratch
 
-## Stage 2: Tokenizer (short) — [stage02_tokenizer/](stage02_tokenizer/)
+## Stage 2: Tokenizer ✅ — [stage02_tokenizer/](stage02_tokenizer/)
 - ✅ 2.1 Inside the tokenizer: bytes, `Ġ`/`Ċ`, reserved slots, compression, why 6,400 tokens
-- 👉 2.2 The chat template: what a conversation looks like to the model
+- ✅ 2.2 The chat template: `<|im_start|>role … <|im_end|>`, generation prompt, thinking mode, how it stops
 
 ## Stage 3: Data pipeline (`dataset/lm_dataset.py`)
 - ⬜ Download datasets · pretraining samples · loss masks · chat template for SFT data
@@ -103,6 +103,9 @@ Real answers from the author's trained 64M model ([extras/chat_with_minimind.py]
 | KV cache | saved K and V of past tokens, reused while generating | 1.5 |
 | GQA | fewer K/V heads, shared by query heads, to shrink the KV cache | 1.5 |
 | ÷√d | shrinks scores so softmax isn't winner-takes-all | 1.6 |
+| byte | 8 bits = 256 possible values; all text is stored as bytes | 2.1 |
+| chat template | wraps each message in `<\|im_start\|>role … <\|im_end\|>` | 2.2 |
+| eos token | `<\|im_end\|>` (id 2): the model predicts it to end its turn | 2.2 |
 | hallucination | a fluent, confident, made-up answer (see above 😄) | extras |
 
 ## How we keep it in memory
