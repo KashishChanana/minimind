@@ -67,6 +67,10 @@ A bigger dictionary would compress better (common phrases would get their own to
 
 With Qwen's dictionary, two-thirds of MiniMind would be lookup table, leaving little for the blocks that actually think. Large models can afford big dictionaries; a 64M model can't. **The trade-off:** a small dictionary keeps the model's capacity for thinking, but text takes more tokens and rare words get chopped up (like `Einstein` → 5 pieces in Lesson 0.1).
 
+## Why only 256 bytes?
+
+A byte = 8 bits, each 0 or 1, so 2⁸ = **256** possible values (0–255). That's how memory is built. Bigger characters use **several bytes** (UTF-8: 1–4): `A` = 1, `é` = 2, `你` = 3, `😀` = 4 `[240, 159, 152, 128]`. Like 26 letters spelling any word, 256 bytes combined write any character. MiniMind has no `😀` token, so it falls back to byte pieces: `[4544, 282, 258]`. Ugly, but it never fails.
+
 ## Two sizes not to mix up
 
 | | What it is | What it affects |
@@ -75,6 +79,18 @@ With Qwen's dictionary, two-thirds of MiniMind would be lookup table, leaving li
 | **sequence length** | tokens in a particular text | the **seq × seq attention scores** |
 
 Bigger dictionary → **shorter** texts (cheaper attention) but a **bigger** embedding table. Raw bytes → tiny table but texts about 4× longer (attention about 16× bigger). MiniMind picks a small dictionary because at 64M parameters every parameter counts.
+
+**Experiment** (`lesson01b_vocab_vs_length.py`): BPE tokenizers trained on the README with different vocab sizes, all encoding the same 82-byte sentence:
+
+| Vocab | Tokens | Example pieces |
+|---|---|---|
+| bytes | 82 | one per byte |
+| 300 | 54 | `' t' 'ra' 'in' 'ed'` |
+| 1,000 | 26 | `' train' 'ed'` |
+| 3,000 | 22 | `' trained'` |
+| 6,000 | 20 | `' trained'` `' next'` |
+
+More entries = more whole words have their own token = fewer pieces per sentence. Returns shrink: 300→1,000 halves the length, 3,000→6,000 saves only 2 tokens, because the extra entries are rarer chunks.
 
 ## ASCII / UTF-8 vs the tokenizer
 
