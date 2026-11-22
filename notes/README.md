@@ -6,7 +6,7 @@ Run scripts from the `minimind/` folder: `.venv/bin/python notes/<stage>/<lesson
 ✅ done · 👉 next · 🟡 half done · ⬜ to do · 🖥️ needs a rented GPU
 
 ```
-Progress  ████████░░░░░░░░░░░░  12 / 32 lessons   (attention: done ✅)
+Progress  ████████░░░░░░░░░░░░  13 / 34 lessons   (attention: done ✅)
 ```
 
 ## Stage 0: Foundations ✅ — [stage00_foundations/](stage00_foundations/)
@@ -40,8 +40,10 @@ Progress  ████████░░░░░░░░░░░░  12 / 32 
 - ✅ 2.1 Inside the tokenizer: bytes, `Ġ`/`Ċ`, reserved slots, compression, why 6,400 tokens
 - ✅ 2.2 The chat template: `<|im_start|>role … <|im_end|>`, generation prompt, thinking mode, how it stops
 
-## Stage 3: Data pipeline (`dataset/lm_dataset.py`)
-- ⬜ Download datasets · pretraining samples · loss masks · chat template for SFT data
+## Stage 3: Data pipeline (`dataset/lm_dataset.py`) — [stage03_data/](stage03_data/)
+- ✅ 3.1 What the data looks like: JSONL, pretraining text vs SFT conversations (sample download)
+- 👉 3.2 `PretrainDataset`: text → fixed-length token rows, padding, labels
+- ⬜ 3.3 `SFTDataset`: chat template + loss mask (learn only the assistant's words)
 
 ## Stage 4: Pretraining (`trainer/train_pretrain.py`, `trainer_utils.py`)
 - ⬜ The real training loop: AdamW, cosine LR, mixed precision, gradient accumulation, checkpoints
